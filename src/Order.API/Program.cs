@@ -1,4 +1,5 @@
 using MassTransit;
+using Order.API.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,17 @@ builder.Services.AddMediatR(cfg =>
   cfg.RegisterServicesFromAssemblyContaining<Program>();
 });
 
+
 builder.Services.AddMassTransit(opt =>
 {
+  opt.AddConsumer<OrderProcedeedConsumer>();
+
   opt.UsingRabbitMq((context, config) =>
   {
     config.Host(builder.Configuration.GetConnectionString("RabbitConn"));
+
+    // Not: Event beklediðimiz için queue yazmadýk. event yerine send ile gönderilseydi kuyruk tanýmý yapmalýydýk.
+    config.ReceiveEndpoint(x => x.ConfigureConsumer<OrderProcedeedConsumer>(context));
   });
 });
 

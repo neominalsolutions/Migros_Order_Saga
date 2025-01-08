@@ -17,4 +17,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\Message.Contracts\Message.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

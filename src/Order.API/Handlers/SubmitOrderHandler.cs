@@ -22,11 +22,11 @@ namespace Order.API.Handlers
       int orderId = rdm.Next(0, 100);
       string orderCode = $"Code_{orderId}";
 
-      var uri = new Uri("queue:order-saga");
+      var uri = new Uri("queue:order-saga-queue");
       var endpoint = await this.sendEndpointProvider.GetSendEndpoint(uri);
 
 
-      await endpoint.Send<IOrderCommand>(new { OrderId = orderId, OrderCode = orderCode });
+      await endpoint.Send<IOrderCommand>(new { CorrelationId = Guid.NewGuid(), OrderId = orderId, OrderCode = orderCode });
 
 
       await Task.CompletedTask;
