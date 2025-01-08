@@ -24,6 +24,7 @@ builder.Services.AddMassTransit(cfg =>
 });
 
 
+builder.Build().Run();
 
 
 

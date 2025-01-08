@@ -1,4 +1,5 @@
-﻿using MassTransit.Mediator;
+﻿
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.Requests;
@@ -9,9 +10,9 @@ namespace Order.API.Controllers
   [ApiController]
   public class OrdersController : ControllerBase
   {
-    private readonly IMediator mediator;
-
-    public OrdersController(IMediator mediator)
+    private readonly ISender mediator;
+    // private readonly IMediator mediator1;
+    public OrdersController(ISender mediator)
     {
       this.mediator = mediator;
     }

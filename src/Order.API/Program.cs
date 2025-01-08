@@ -1,5 +1,7 @@
 using MassTransit;
 using Order.API.Consumers;
+using Order.API.Handlers;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,7 @@ builder.Services.AddSwaggerGen();
 // asembly load ederek o assembly içindeki tüm handlerlar Net Core IoC yüklendi.
 builder.Services.AddMediatR(cfg =>
 {
-  cfg.RegisterServicesFromAssemblyContaining<Program>();
+  cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
 

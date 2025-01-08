@@ -74,14 +74,25 @@ namespace Order.Saga
        .ThenAsync(async context =>
        {
          await Console.Out.WriteLineAsync("Order Recieved");
-       }).TransitionTo(Proceeded).Publish(context => new OrderProceeded // Artık OrderRecieved oldu bu event fırlat ki bunu dinleyen ms kendi iş sürecinin burada ki bilgilere göre devam ettirsin
+       })
+       .TransitionTo(Proceeded)
+       .Publish(context => new OrderProceeded // Artık OrderRecieved oldu bu event fırlat ki bunu dinleyen ms kendi iş sürecinin burada ki bilgilere göre devam ettirsin
        {
          CorrelationId = context.Message.CorrelationId,
          OrderId = context.Message.OrderId,
          OrderCode = context.Message.OrderCode
 
-       })
-       .Finalize());
+       }));
+
+
+      // son süreç
+      During(Proceeded,
+      When(OrderProceeded)
+      .ThenAsync(async context =>
+      {
+        await Console.Out.WriteLineAsync("Order Proceeded");
+      })
+      .Finalize());
 
 
 
